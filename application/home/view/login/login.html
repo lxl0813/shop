@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link type="text/css" rel="stylesheet" href="/home/css/style.css" />
+    <!--[if IE 6]>
+    <script src="/home/js/iepng.js" type="text/javascript"></script>
+        <script type="text/javascript">
+           EvPNG.fix('div, ul, img, li, input, a'); 
+        </script>
+    <![endif]-->    
+    <script type="text/javascript" src="/home/js/jquery-1.11.1.min_044d0927.js"></script>
+	<script type="text/javascript" src="/home/js/jquery.bxslider_e88acd1b.js"></script>
+    <script type="text/javascript" src="/home/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/home/js/menu.js"></script>
+	<script type="text/javascript" src="/home/js/select.js"></script>
+	<script type="text/javascript" src="/home/js/lrscroll.js"></script>
+    <script type="text/javascript" src="/home/js/iban.js"></script>
+    <script type="text/javascript" src="/home/js/fban.js"></script>
+    <script type="text/javascript" src="/home/js/f_ban.js"></script>
+    <script type="text/javascript" src="/home/js/mban.js"></script>
+    <script type="text/javascript" src="/home/js/bban.js"></script>
+    <script type="text/javascript" src="/home/js/hban.js"></script>
+    <script type="text/javascript" src="/home/js/tban.js"></script>
+	<script type="text/javascript" src="/home/js/lrscroll_1.js"></script>
+    <script>
+    $(document).ready(function(){
+    var validate = {
+    checkName  :  false,
+    checkPwd   :  false,
+    checkCode  :  false
+    };
+    //账号
+    $("input[name=user_name]").blur(function(){
+    var user_name = $(this).val().trim();
+    if (user_name == "") {
+    layer.tips('请输入账号',$(this));
+    validate.checkName = false;
+    return false
+    }
+    });
+    //密码
+    $("input[name=user_pwd]").blur(function(){
+    var user_pwd = $(this).val().trim();
+    if (user_pwd == "") {
+    layer.tips('请输入密码',$(this));
+    validate.checkPwd = false;
+    return false
+    }
+    });
+
+    //验证码
+    $("input[name=user_code]").blur(function(){
+    var user_code = $(this).val().trim();
+    if (user_code == "") {
+    layer.tips('请输入密码',$(this));
+    validate.checkCode = false;
+    return false
+    }
+    });
+
+    //提交登录
+    $('.submit_btn').click(function(){
+    $("input[name=user_name]").trigger("blur");
+    $("input[name=user_pwd]").trigger("blur");
+    $("input[name=user_code]").trigger("blur");
+    var user_name = $("input[name=user_name]").val().trim();
+    var user_pwd = $("input[name=user_pwd]").val().trim();
+    var user_code = $("input[name=user_code]").val().trim();
+    var save=$("input[name=save]").prop("checked");
+    //alert(1);
+    //发送ajax验证
+        $.ajax({
+            type : "post",
+            url  : "{:url('Login/login')}",
+            data : {
+                admin_name:admin_name,
+                admin_pwd:admin_pwd,
+                admin_code:admin_code,
+                save:save
+            },
+            dataType:"json",
+            success:function(data){
+                if(data.status==4){
+                    layer.alert(data.msg,{
+                        icon: 6,
+                        skin: 'layer-ext-moon'
+                    });
+                window.location.href="{:url('Index/index')}";
+                }
+                if(data.status==0){
+                    alert(data.msg);
+                }
+                if(data.status==1){
+                    alert(data.msg);
+                }
+                if(data.status==2){
+                    alert(data.msg);
+                }
+                if(data.status==3){
+                    alert(data.msg);
+                }
+                if(data.status==5){
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+    </script>
+    
+<title>用户登录</title>
+</head>
+<body>  
+<!--Begin Header Begin-->
+<div class="soubg">
+	<div class="sou">
+        <span class="fr">
+        	<span class="fl">你好，请<a href="">登录</a>&nbsp; <a href="{:url('Register/register')}" style="color:#ff4e00;">免费注册</a>&nbsp; </span>
+            <span class="fl">|&nbsp;关注我们：</span>
+            <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="/home/images/s_tel.png" align="absmiddle" /></a></span>
+        </span>
+    </div>
+</div>
+<!--End Header End--> 
+<!--Begin Login Begin-->
+<div class="log_bg">	
+    <div class="top">
+        <div class="logo"><a href="Index.html"><img src="/home/images/logo.png" /></a></div>
+    </div>
+	<div class="login">
+    	<div class="log_img"><img src="/home/images/l_img.png" width="611" height="425" /></div>
+		<div class="log_c">
+        	<form>
+            <table border="0" style="width:370px; font-size:14px; margin-top:30px;" cellspacing="0" cellpadding="0">
+              <tr height="50" valign="top">
+              	<td width="55">&nbsp;</td>
+                <td>
+                	<span class="fl" style="font-size:24px;">登录</span>
+                    <span class="fr">还没有商城账号，<a href="{:url('Register/register')}" style="color:#ff4e00;">立即注册</a></span>
+                </td>
+              </tr>
+              <tr height="70">
+                <td>用户名</td>
+                <td><input type="text" name="user_name" value="" class="l_user" /></td>
+              </tr>
+              <tr height="70">
+                <td>密&nbsp; &nbsp; 码</td>
+                <td><input type="password" name="user_pwd" value="" class="l_pwd" /></td>
+              </tr>
+              <tr height="50">
+                   <td align="left">验证码</td>
+                   <td>
+                        <input type="text" value="" class="l_ipt" />
+                        <img src="{:captcha_src()}" alt="captche" onclick="this.src='{:captcha_src()}?'+Math.random()" width="100px" height="30px">
+                  </td>
+              </tr>
+              <tr>
+              	<td>&nbsp;</td>
+                <td style="font-size:12px; padding-top:20px;">
+                	<span style="font-family:'宋体';" class="fl">
+                    	<label class="r_rad"><input type="checkbox" value="1" /></label><label class="r_txt">请保存我这次的登录信息</label>
+                    </span>
+                    <span class="fr"><a href="#" style="color:#ff4e00;">忘记密码</a></span>
+                </td>
+              </tr>
+              <tr height="60">
+              	<td>&nbsp;</td>
+                <td><input type="submit" value="登录" class="log_btn" /></td>
+              </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>
+<!--End Login End--> 
+<!--Begin Footer Begin-->
+<div class="btmbg">
+    <div class="btm">
+        备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
+        <img src="/home/images/b_1.gif" width="98" height="33" /><img src="/home/images/b_2.gif" width="98" height="33" /><img src="/home/images/b_3.gif" width="98" height="33" /><img src="/home/images/b_4.gif" width="98" height="33" /><img src="/home/images/b_5.gif" width="98" height="33" /><img src="/home/images/b_6.gif" width="98" height="33" />
+    </div>    	
+</div>
+<!--End Footer End -->    
+
+</body>
+
+
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>

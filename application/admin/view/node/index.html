@@ -1,0 +1,45 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 权限管理 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>权限管理</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Node/add')}" class="actionBtn">添加权限</a>权限管理</h3>
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+     <tr>
+      <th width="30" align="center">展开</th>
+      <th align="left">权限名称</th>
+      <th align="left">权限所属控制器</th>
+      <th align="left">权限所属方法</th>
+      <th align="left">url地址</th>
+      <th align="center">操作</th>
+     </tr>
+     {foreach $data as $k=>$v}
+     <tr>
+      <td><a href="javascript:void(0)" class="showPlus"></a></td>
+      <td>{:str_repeat("　　",$v.level)}{$v.node_name}</td>
+      <td>{$v.node_controller}</td>
+      <td>{$v.node_action}</td>
+      <th align="left">{$v.node_url}</th>
+      <td><a href="addmanager.html?rec=edit&id=1">编辑</a> | <a href="manager.html?rec=del&id=1">删除</a></td>
+     </tr>
+     {/foreach}
+     </table>
+      </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

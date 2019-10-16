@@ -1,0 +1,107 @@
+{extend name="public:public"}
+
+{block name="title"}<title>DouPHP 管理中心 - 网站管理员 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+<script type="text/javascript" src="/layer/layer/layer.js"></script>
+<script>
+    $(function(){
+        var validate = {
+            checkName   :  false,
+            checkPwd    :  false,
+            checkRepwd  :  false
+        };
+        //账号
+        $("input[name=admin_name]").blur(function(){
+            var admin_name = $(this).val().trim();
+            if (admin_name == "") {
+                layer.tips('请输入账号',$(this));
+                validate.checkName = false;
+                return false
+            }
+        });
+        //密码
+        $("input[name=admin_pwd]").blur(function(){
+            var admin_pwd = $(this).val().trim();
+            if (admin_pwd == "") {
+                layer.tips('请输入密码',$(this));
+                validate.checkPwd = false;
+                return false
+            }
+        });
+        //确认密码
+        $("input[name=admin_repwd]").blur(function(){
+            var admin_repwd = $(this).val().trim();
+            if (admin_repwd == "") {
+                layer.tips('请输入密码',$(this));
+                validate.checkRepwd = false;
+                return false
+            }
+            var admin_pwd= $("input[name=admin_pwd]").val().trim();
+            if (admin_repwd!==user_repwd){
+                layer.tips('请输入密码',$(this));
+                validate.checkPwd = false;
+                return false
+            }
+        });
+    });
+</script>
+{/block}
+
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>添加管理员</strong> </div><div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="manager.html" class="actionBtn">网站管理员</a>添加管理员</h3>
+    <form action="{:url('Admin/add')}" method="post">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+       <td width="100" align="right">添加管理员</td>
+       <td>
+        <input type="text" name="admin_name" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <tr>
+       <td align="right">密码</td>
+       <td>
+        <input type="password" name="admin_pwd" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <tr>
+       <td align="right">确认密码</td>
+       <td>
+        <input type="password" name="admin_repwd" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <tr>
+       <td align="right">权限角色名</td>
+       <td>
+           {foreach $data as $k=>$v}
+        <input type="checkbox" name="role_name" value="{$v.role_id}"/>{$v['role_name']}
+           {/foreach}
+       </td>
+
+      </tr>
+      <tr>
+       <td></td>
+       <td>
+        <input type="submit" name="submit" class="btn" value="提交" />
+       </td>
+      </tr>
+     </table>
+    </form>
+    </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

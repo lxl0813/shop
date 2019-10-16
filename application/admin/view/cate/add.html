@@ -1,0 +1,86 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 添加分类 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>添加分类</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Cate/index')}" class="actionBtn">商品分类</a>添加分类</h3>
+    <form action="{:url('Cate/add')}" method="post">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+          <td width="80" align="right">分类名称</td>
+          <td>
+              <input type="text" name="cate_name" value="" size="40" class="inpMain" />
+          </td>
+      </tr>
+      <tr>
+          <td align="right">是否显示</td>
+          <td>
+              <input type="radio" name="cate_show" value="0" size="40"  />显示
+              <input type="radio" name="cate_show" value="1" size="40"  />不显示
+          </td>
+      </tr>
+      <tr>
+          <td align="right">是否导航</td>
+          <td>
+              <input type="radio" name="cate_navigation" value="1" size="40"  />导航
+              <input type="radio" name="cate_navigation" value="0" size="40"  />不导航
+          </td>
+      </tr>
+      <tr>
+          <td align="right">上级分类</td>
+          <td>
+              <select name="cate_pid">
+                  <option value="0">顶级分类</option>
+               {foreach $data as $k=>$v}
+                  <option value="{$v.cate_id}">{:str_repeat("　",$v.level)}{$v.cate_name}</option>
+               {/foreach}
+              </select>
+          </td>
+      </tr>
+      <tr>
+          <td align="right">关键字</td>
+          <td>
+              <input type="text" name="cate_keyword"  size="40" class="inpMain" />
+          </td>
+      </tr>
+      <tr>
+          <td align="right">简单描述</td>
+          <td>
+              <textarea name="cate_content" cols="60" rows="4" class="textArea"></textarea>
+          </td>
+      </tr>
+      <tr>
+          <td align="right">排序</td>
+          <td>
+              <input type="text" name="cate_order"  size="5" class="inpMain" />
+          </td>
+      </tr>
+      <tr>
+          <td></td>
+          <td>
+              <input type="hidden" name="token" value="b9439ae8" />
+              <input type="hidden" name="cat_id" value="" />
+              <input name="submit" class="btn" type="submit" value="提交" />
+           </td>
+      </tr>
+     </table>
+    </form>
+       </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

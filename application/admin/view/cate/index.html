@@ -1,0 +1,53 @@
+
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 添加分类 </title>{/block}
+{block name="script"}
+    <link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/admins/js/global.js"></script>
+
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>商品分类</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="{:url('Cate/add')}" class="actionBtn add">添加分类</a>商品分类</h3>
+<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+    <thead>
+    <tr>
+          <th align="center">展开</th>
+          <th width="120" align="left">分类名称</th>
+          <th align="left">是否显示</th>
+          <th align="left">是否导航</th>
+          <th align="left">分类描述</th>
+          <th width="60" align="center">排序</th>
+          <th width="80" align="center">操作</th>
+     </tr>
+     </thead>
+     <tbody class="a">
+     {foreach $data as $k=>$v}
+     <tr cate_id="{$v['cate_id']}" cate_pid="{$v['cate_pid']}">
+          <td><a href="javascript:void(0)" class="showPlus"></a></td>
+          <td align="left"> <a href="#">{:str_repeat("--",$v['level'])}{$v['cate_name']}</a></td>
+          <td>{if $v.cate_show==0}显示{else /}不显示{/if}</td>
+          <td>{if $v.cate_navigation==0}不导航{else /}导航{/if}</td>
+          <td>{$v.cate_content}</td>
+          <td align="center">{$v.cate_order}</td>
+          <td align="center"><a href="">编辑</a> | <a href="">删除</a></td>
+     </tr>
+     {/foreach}
+     </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

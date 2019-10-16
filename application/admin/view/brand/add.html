@@ -1,0 +1,174 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 添加品牌 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+<script type="text/javascript" src="/layer/layer/layer.js"></script>
+<script>
+    //上传至数据库
+    $(function(){
+        var validate = {
+            brand_name    :  false,
+            brand_show    :  false,
+            brand_web     :  false,
+            brand_content :  false,
+            brand_order   :  false
+        };
+        //账号
+        $("input[name=brand_name]").blur(function(){
+            var brand_name = $(this).val().trim();
+            if (brand_name == "") {
+                layer.tips('请输入品牌名称',$(this));
+                validate.brand_name = false;
+                return false
+            }
+        });
+            //品牌网址
+        $("input[name=brand_web]").blur(function(){
+            var brand_web = $(this).val().trim();
+            if (brand_web == "") {
+                layer.tips('请输入品牌网址',$(this));
+                validate.brand_web = false;
+                return false
+            }
+        });
+            //验证码
+        $("input[name=brand_content]").blur(function(){
+            var brand_content = $(this).val().trim();
+            if (brand_content == "") {
+                layer.tips('请输入描述',$(this));
+                validate.brand_content = false;
+                return false
+            }
+        });
+
+        $(".btn").click(function(){
+            $("input[name=brand_name]").trigger("blur");
+            $("input[name=brand_web]").trigger("blur");
+            $("input[name=brand_content]").trigger("blur");
+            $("input[name=brand_order]").trigger("blur");
+
+            var brand_name = $("input[name=brand_name]").val().trim();
+            var brand_web = $("input[name=brand_web]").val().trim();
+            var brand_content = $("input[name=brand_content]").val().trim();
+            var brand_show=$("input[name=brand_show]").prop("checked");
+            var brand_order=$("input[name=brand_order]").val().trim();
+            if(validate.brand_name&&validate.brand_web&&validate.brand_content&&validate.brand_order){
+                //获取文件信息
+                var file=$("#face")[0].files[0];
+                if(file.name==""){
+                    layer.tips('请选择图片',$(this));
+                    return false;
+                }
+                if(file.size>2000000){
+                    layer.tips('图片大小不能超过2M',$(this));
+                    return false;
+                }
+                var fr=new FileReader();
+                //读取文件内容
+                fr.readAsDataURL(file);
+                //获取图片读取状态
+                //alert(1);
+                fr.onload=function(){
+                    //读取完毕后。开始通过ajax上传
+                    var obj=this;
+                    $.ajax({
+                        type:"post",
+                        url :"{:url('Brand/add')}",
+                        data:{
+                            face           :   this.result,
+                            brand_name     :   brand_name,
+                            brand_web      :   brand_web,
+                            brand_content  :   brand_content,
+                            brand_order    :   brand_order,
+                            brand_show     :   brand_show
+                        },
+                        dataType:"json",
+                        beforeSend:function(){
+                            layer.load(1, {
+                                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                            });
+                        },
+                        success:function(data){
+                            layer.closeAll('loading');
+                            if(data.status==0){
+                                layer.msg('上传成功');
+                            }else{
+                                alert(data.msg)
+                            }
+                        }
+                    })
+                }
+            }
+
+        })
+    })
+</script>
+
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>添加品牌</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Brand/index')}" class="actionBtn">品牌管理</a>添加品牌</h3>
+    <form action="{:url('Brand/add')}" method="post" enctype="multipart/form-data">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+          <td width="80" align="right">品牌名称</td>
+          <td>
+              <input type="text" name="brand_name" value="" size="40" class="inpMain" />
+          </td>
+      </tr>
+      <tr>
+          <td align="right">是否显示</td>
+          <td>
+              <input type="radio" name="brand_show" value="0" size="40"  />显示
+              <input type="radio" name="brand_show" value="1" size="40"  />不显示
+          </td>
+      </tr>
+      <tr>
+          <td width="80" align="right">品牌网站</td>
+          <td>
+              <input type="text" name="brand_web" value="" size="40" class="inpMain" />
+          </td>
+      </tr>
+      <tr>
+          <td align="right">简单描述</td>
+          <td>
+              <textarea name="brand_content" cols="60" rows="4" class="textArea"></textarea>
+          </td>
+      </tr>
+      <tr>
+          <td align="right">排序</td>
+          <td>
+              <input type="text" name="brand_order"  size="5" class="inpMain" />
+          </td>
+      </tr>
+         <tr>
+             <td align="right">品牌logo</td>
+             <td>
+                 <input type="file" name="brand_logo" id="face" >
+             </td>
+         </tr>
+      <tr>
+          <td></td>
+          <td>
+              <input class="btn" type="submit" value="提交" />
+           </td>
+      </tr>
+     </table>
+     </form>
+</div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

@@ -1,0 +1,57 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 网站管理员 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>网站管理员</strong> </div><div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Admin/add')}" class="actionBtn">添加管理员</a>网站管理员</h3>
+        <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+     <tr>
+      <th width="30" align="center">编号</th>
+      <th align="left">管理员名称</th>
+      <th align="center">添加时间</th>
+      <th align="center">最后登录时间</th>
+      <th align="center">拥有角色</th>
+      <th align="center">拥有权限</th>
+      <th align="center">操作</th>
+     </tr>
+     {foreach $data as $k=>$v}
+     <tr>
+      <td align="center">{$v.admin_id}</td>
+      <td>{$v.admin_name}</td>
+      <td align="center">{$v.admin_add_time}</td>
+      <td align="center">{$v.admin_last_logtime}</td>
+      <td align="center">
+       {foreach $v->role as $key=>$val}
+       {$val->role_name}
+       {/foreach}
+      </td>
+      <td align="center">
+       {foreach $v->role as $key=>$val}
+       {foreach $val->node as $k1=>$v1}
+       {$v1->node_name}
+       {/foreach}
+       {/foreach}
+      </td>
+      <td align="center"><a href="addmanager.html?rec=edit&id=1">编辑</a> | <a href="manager.html?rec=del&id=1">删除</a></td>
+     </tr>
+     {/foreach}
+   </table>
+  </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

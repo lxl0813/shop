@@ -1,0 +1,66 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 角色添加 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>角色添加</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="manager.html" class="actionBtn">角色管理</a>角色添加</h3>
+    <form action="{:url('Role/add')}" method="post">
+        <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+        <tr>
+            <td width="100" align="right">角色名称</td>
+            <td>
+                <input type="text" name="role_name" size="40" class="inpMain" />
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right">选择权限</td>
+            <td>
+                <table>
+                 {foreach $data as $k=>$v}
+                 {if $v.node_pid==0}
+                     <tr>
+                         <td>
+                             <input type="checkbox" name="node_id[]" value="{$v.node_id}">{$v.node_name}
+                         </td>
+                         <td>
+                             {foreach $data as $key=>$val}
+                             <br>
+                             {if $val.node_pid==$v.node_id}
+                              <input type="checkbox" name="node_id[]" value="{$val.node_id}">{$val.node_name}
+                             {/if}
+                             {/foreach}
+                         </td>
+                     </tr>
+                 {/if}
+                 {/foreach}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="hidden" name="token" value="5a58b748" />
+                <input type="submit" name="submit" class="btn" value="提交" />
+            </td>
+        </tr>
+        </table>
+    </form>
+ </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}
