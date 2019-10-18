@@ -1,5 +1,5 @@
 {extend name="public:public"}
-{block name="title"}<title>DouPHP 管理中心 - 角色管理 </title>{/block}
+{block name="title"}<title>DouPHP 管理中心 - 类型管理 </title>{/block}
 {block name="script"}
 <link href="/admins/css/public.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/admins/js/jquery.min.js"></script>
@@ -8,19 +8,21 @@
 {block name="now"}
 <!-- 当前位置 -->
  <div id="dcMain">
-<div id="urHere">DouPHP 管理中心<b>></b><strong>角色管理</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-    <h3><a href="{:url('Role/add')}" class="actionBtn">添加角色</a>角色管理</h3>
+<div id="urHere">DouPHP 管理中心<b>></b><strong>类型管理</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Type/add')}" class="actionBtn">添加类型</a>类型管理</h3>
      <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
      <tr>
-      <th width="30" align="center">编号</th>
-      <th align="left">角色名称</th>
-      <th align="center">操作</th>
+         <th width="30" align="center">编号</th>
+         <th align="center">类型名称</th>
+         <th align="center">类型分组</th>
+         <th align="center">操作</th>
      </tr>
      {foreach $data as $k=>$v}
      <tr>
-      <td align="center">{$v.role_id}</td>
-      <td>{$v.role_name}</td>
-      <td align="center"><a href="{:url('Role/update')}">编辑</a> | <a href="{:url('Role/delete')}">删除</a></td>
+         <td align="center">{$v.type_id}</td>
+         <td align="center">{$v.type_name}</td>
+         <td align="center">{$v.type_group}</td>
+         <td align="center"><a href="{:url('Type/update')}">编辑</a> | <a href="{:url('Type/delete')}">删除</a></td>
      </tr>
      {/foreach}
      </table>

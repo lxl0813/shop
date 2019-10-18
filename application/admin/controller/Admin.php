@@ -9,17 +9,15 @@ use think\validate\ValidateRule;
 
 class Admin extends Common{
     public function index(){
-        $session=Session::get("admin")["admin_name"];
         $data=(new \app\admin\model\Admin())->all();
-        return view("admin/index",["admin"=>$session,"data"=>$data]);
+        return view("admin/index",["data"=>$data]);
     }
 
     //添加管理员
     public function add(){
         if(request()->isGet()){
-            $session=Session::get("admin")["admin_name"];
             $data=Role::selectRole();
-            return view("",["admin"=>$session,"data"=>$data]);
+            return view("",["data"=>$data]);
         }
         if(request()->isPost()){
             //接值
@@ -43,5 +41,26 @@ class Admin extends Common{
                 $this->error("管理员添加成功");
             }
         }
+    }
+
+    //删除
+    public function delete(){
+        if(request()->isGet()){
+            return view("");
+        }
+        if(request()->isPost()){
+
+        }
+    }
+
+    //修改
+    public function update(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
+        }
+
     }
 }

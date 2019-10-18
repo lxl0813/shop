@@ -10,7 +10,6 @@
     $(function(){
         var validate = {
             brand_name    :  false,
-            brand_show    :  false,
             brand_web     :  false,
             brand_content :  false,
             brand_order   :  false
@@ -20,8 +19,9 @@
             var brand_name = $(this).val().trim();
             if (brand_name == "") {
                 layer.tips('请输入品牌名称',$(this));
-                validate.brand_name = false;
-                return false
+                 validate.brand_name = false;
+            }else{
+                validate.brand_name = true;
             }
         });
             //品牌网址
@@ -29,20 +29,35 @@
             var brand_web = $(this).val().trim();
             if (brand_web == "") {
                 layer.tips('请输入品牌网址',$(this));
-                validate.brand_web = false;
-                return false
+                 validate.brand_web = false;
+            }else{
+                validate.brand_web = true;
             }
         });
             //验证码
-        $("input[name=brand_content]").blur(function(){
+        $("textarea[name=brand_content]").blur(function(){
             var brand_content = $(this).val().trim();
             if (brand_content == "") {
                 layer.tips('请输入描述',$(this));
                 validate.brand_content = false;
-                return false
+            }else{
+                validate.brand_content = true;
             }
         });
 
+        //顺序
+        $("input[name=brand_order]").blur(function(){
+            var brand_order = $(this).val().trim();
+            if (brand_order == "") {
+                layer.tips('请输入描述',$(this));
+                 validate.brand_order = false;
+            }else{
+                validate.brand_order = true;
+            }
+
+        });
+
+        //提交
         $(".btn").click(function(){
             $("input[name=brand_name]").trigger("blur");
             $("input[name=brand_web]").trigger("blur");
@@ -51,10 +66,10 @@
 
             var brand_name = $("input[name=brand_name]").val().trim();
             var brand_web = $("input[name=brand_web]").val().trim();
-            var brand_content = $("input[name=brand_content]").val().trim();
+            var brand_content = $("textarea[name=brand_content]").val().trim();
             var brand_show=$("input[name=brand_show]").prop("checked");
             var brand_order=$("input[name=brand_order]").val().trim();
-            if(validate.brand_name&&validate.brand_web&&validate.brand_content&&validate.brand_order){
+            if(validate.brand_name && validate.brand_web && validate.brand_content && validate.brand_order){
                 //获取文件信息
                 var file=$("#face")[0].files[0];
                 if(file.name==""){
@@ -72,7 +87,6 @@
                 //alert(1);
                 fr.onload=function(){
                     //读取完毕后。开始通过ajax上传
-                    var obj=this;
                     $.ajax({
                         type:"post",
                         url :"{:url('Brand/add')}",
@@ -94,6 +108,7 @@
                             layer.closeAll('loading');
                             if(data.status==0){
                                 layer.msg('上传成功');
+                                window.location.reload()
                             }else{
                                 alert(data.msg)
                             }
@@ -101,7 +116,6 @@
                     })
                 }
             }
-
         })
     })
 </script>
@@ -112,7 +126,7 @@
  <div id="dcMain">
 <div id="urHere">DouPHP 管理中心<b>></b><strong>添加品牌</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
     <h3><a href="{:url('Brand/index')}" class="actionBtn">品牌管理</a>添加品牌</h3>
-    <form action="{:url('Brand/add')}" method="post" enctype="multipart/form-data">
+    <!--<form action="{:url('Brand/add')}" method="post" enctype="multipart/form-data">-->
      <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
       <tr>
           <td width="80" align="right">品牌名称</td>
@@ -158,7 +172,7 @@
            </td>
       </tr>
      </table>
-     </form>
+     <!--</form>-->
 </div>
  </div>
  <div class="clear"></div>

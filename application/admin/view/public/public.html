@@ -33,8 +33,6 @@
     </div>
 </div>
 </div>
-
-
     <div id="dcLeft"><div id="menu">
         <ul class="top">
             <li><a href="{:url('Index/index')}"><i class="home"></i><em>管理首页</em></a></li>
@@ -46,14 +44,17 @@
                     <i class="system"></i>
                     <em>{$val.node_name}</em>
                 </a>
+                {if $val.son!=""}
                 {foreach $val.son as $k=>$v}
                 <p hidden>{$url=ucfirst(strtolower($v.node_controller))."/".strtolower($v.node_action)}</p>
                 <li><a href='{:url("$url")}'><i></i><em>{$v.node_name}</em></a></li>
                 {/foreach}
+                {/if}
             </li>
             {/foreach}
         </ul>
-    </div></div>
+    </div>
+</div>
 
 {block name="now"}{/block}
 </body>

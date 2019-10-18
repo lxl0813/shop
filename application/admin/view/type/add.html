@@ -1,0 +1,48 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 类型添加 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>类型添加</strong> </div><div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Type/index')}" class="actionBtn">类型管理</a>类型添加</h3>
+    <form action="{:url('type/add')}" method="post">
+        <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+        <tr>
+            <td width="100" align="right">类型名称</td>
+            <td>
+                <input type="text" name="type_name" size="40" class="inpMain" />
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right">类型分组</td>
+            <td>
+                <textarea name="type_group" class="inpMain"></textarea>(可输入多个分组，各分组名称之间请用 | 隔开)
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="hidden" name="token" value="5a58b748" />
+                <input type="submit" name="submit" class="btn" value="提交" />
+            </td>
+        </tr>
+        </table>
+    </form>
+ </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

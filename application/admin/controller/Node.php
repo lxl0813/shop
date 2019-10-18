@@ -10,19 +10,17 @@ use think\facade\Session;
 
 class Node extends Common{
     public function index(){
-        $session=Session::get("admin")["admin_name"];
         $data=\app\admin\model\Node::selectNode();
         $node=new NodeService();
         $data=$node->getNodeOrder($data);
-        return view("",["admin"=>$session,"data"=>$data]);
+        return view("",["data"=>$data]);
     }
     public function add(){
         if(request()->isGet()){
-            $session=Session::get("admin")["admin_name"];
             $data=\app\admin\model\Node::selectNode();
             $node=new NodeService();
             $data=$node->getNodeOrder($data);
-            return view("",["admin"=>$session,"data"=>$data]);
+            return view("",["data"=>$data]);
         }
         if(request()->post()){
             //接值
@@ -35,7 +33,25 @@ class Node extends Common{
         }
     }
 
-//
+    //权限删除
+    public function delete(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
+        }
+    }
+
+    //权限的修改
+    public function update(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
+        }
+    }
 
 
 }

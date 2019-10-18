@@ -1,0 +1,100 @@
+{extend name="public:public"}
+{block name="title"}<title>DouPHP 管理中心 - 属性管理 </title>{/block}
+{block name="script"}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+
+<script>
+    $(function(){
+        $("select[name=type_name]").change(function(){
+            $(".one").hide();
+            var type_id = $(this).val().trim();
+            $.ajax({
+                type  :  "post",
+                url   :  "{:url('Attr/show')}",
+                data  :  {
+                    type_id : type_id
+                },
+                dataType:"json",
+                success:function(data){
+                    var html = "";
+                    if(data.status==0){
+                        $.each(data.content,function(k,v){
+                            html+="<tr><td align='center'>"+ v.attr_id+"</td>";
+                            html+="<td align='center'>"+ v.attr_name+"</td>";
+                            html+="<td align='center'>"+ v.type_group+"</td>";
+                            html+="<td align='center'>";
+                            if(v.attr_type==0){
+                                html+="参数";
+                            }else{
+                                html+='规格';
+                            }
+                            html+="</td>";
+                            html+="<td align='center'>";
+                            if(v.attr_input_action==0){
+                                html+="手工录入";
+                            }else if(v.attr_input_action==1){
+                                html+="下拉框"
+                            }else{
+                                html+="单选"
+                            }
+                            html+="</td>";
+                            html+="<td align='center'>"+ v.attr_value+"</td>";
+                            html+="<td align='center'><a href='{:url('Attr/update')}'>编辑</a> | <a href='{:url('Attr/delete')}'>删除</a></td></tr>"
+                        });
+                        $(".attr").html(html);
+                    }
+                    if(data.status==1){
+                        var html="";
+                        html+="<tr style='color: red'><td colspan='7'>对不起没有查询到相关信息</td></tr>";
+                        $(".attr").html(html);
+                    }
+                }
+            })
+        })
+    })
+</script>
+
+{/block}
+{block name="now"}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>属性管理</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+     <h3><a href="{:url('Attr/add')}" class="actionBtn">添加属性</a>类型管理</h3>
+     <select name="type_name">
+         <option value="0" class="one">请先选择类型进行查找</option>
+         {foreach $data as $k=>$v}
+         <option value="{$v.type_id}">{$v.type_name}</option>
+         {/foreach}
+     </select>
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+     <thead>
+     <tr>
+         <th width="30" align="center">编号</th>
+         <th align="center">属性名称</th>
+         <th align="center">所属分组</th>
+         <th align="center">属性的类型</th>
+         <th align="center">录入方式</th>
+         <th align="center">属性可选值</th>
+         <th align="center">操作</th>
+
+     </tr>
+     </thead>
+     <tbody class="attr">
+     <tr style="color: red"><td colspan="7">请先选择您需要的类型,然后我们会根据您所选择的类型查询出它的相关属性</td></tr>
+     </tbody>
+     </table>
+      </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}

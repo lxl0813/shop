@@ -13,20 +13,20 @@
      <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
      <tr>
       <th width="30" align="center">展开</th>
-      <th align="left">权限名称</th>
-      <th align="left">权限所属控制器</th>
-      <th align="left">权限所属方法</th>
-      <th align="left">url地址</th>
+      <th align="center">权限名称</th>
+      <th align="center">权限所属控制器</th>
+      <th align="center">权限所属方法</th>
+      <th align="center">url地址</th>
       <th align="center">操作</th>
      </tr>
      {foreach $data as $k=>$v}
      <tr>
-      <td><a href="javascript:void(0)" class="showPlus"></a></td>
+      <td align="center"><a href="javascript:void(0)" class="showPlus"></a></td>
       <td>{:str_repeat("　　",$v.level)}{$v.node_name}</td>
-      <td>{$v.node_controller}</td>
-      <td>{$v.node_action}</td>
-      <th align="left">{$v.node_url}</th>
-      <td><a href="addmanager.html?rec=edit&id=1">编辑</a> | <a href="manager.html?rec=del&id=1">删除</a></td>
+      <td align="center">{$v.node_controller}</td>
+      <td align="center">{$v.node_action}</td>
+      <th align="center">{$v.node_url}</th>
+      <td align="center"><a href="{:url('Node/update')}">编辑</a> | <a href="{:url('Node/delete')}">删除</a></td>
      </tr>
      {/foreach}
      </table>

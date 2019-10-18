@@ -7,15 +7,10 @@ use app\admin\service\CateService;
 class Cate extends Common{
     public function index(){
        if(request()->isGet()){
-           //获取session值
-           $session=Session::get("admin")["admin_name"];
-           //var_dump($session);exit;
-//           $data=\app\admin\model\Cate::findCate();
-//           $data=$this->getCateOrder($data);
              $arr=new CateService();
              $data=$arr->cate();
              //var_dump($data);exit;
-           return view("Cate/index",["admin"=>$session,"data"=>$data]);
+           return view("Cate/index",["data"=>$data]);
        }
     }
 
@@ -35,12 +30,9 @@ class Cate extends Common{
     //添加分类
     public function add(){
         if(request()->isGet()){
-            //获取session值
-            $session=Session::get("admin")["admin_name"];
-            //var_dump($session);exit;
             $arr=new CateService();
             $data=$arr->cate();
-            return view("",["admin"=>$session,"data"=>$data]);
+            return view("",["data"=>$data]);
         }
         if(request()->isPost()){
             //接值
@@ -64,6 +56,26 @@ class Cate extends Common{
             if($arr){
                 $this->error("添加分类成功");
             }
+        }
+    }
+
+    //分类删除
+    public function delete(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
+        }
+    }
+
+    //分类修改
+    public function update(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
         }
     }
 }

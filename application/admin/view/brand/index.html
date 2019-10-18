@@ -1,4 +1,3 @@
-
 {extend name="public:public"}
 {block name="title"}<title>DouPHP 管理中心 - 品牌管理 </title>{/block}
 {block name="script"}
@@ -14,18 +13,28 @@
 <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
     <thead>
     <tr>
-          <th align="center">展开</th>
-          <th width="120" align="left">品牌名称</th>
-          <th align="left">是否显示</th>
-          <th align="left">品牌网站</th>
-          <th align="left">品牌描述</th>
-          <th width="60" align="center">排序</th>
-          <th width="80" align="center">操作</th>
-     </tr>
-     </thead>
-     <tbody class="a">
-
-     </tbody>
+        <th align="center">编号</th>
+        <th width="120" align="center">品牌名称</th>
+        <th align="center">是否显示</th>
+        <th align="center">品牌网站</th>
+        <th align="center">品牌描述</th>
+        <th width="60" align="center">排序</th>
+        <th width="80" align="center">操作</th>
+    </tr>
+    </thead>
+    <tbody class="a">'
+    {foreach $data as $k=>$v}
+    <tr>
+        <td align="center">{$v.brand_id}</td>
+        <td align="center">{$v.brand_name}</td>
+        <td align="center">{if $v.brand_show==0}显示{else /}不显示{/if}</td>
+        <td align="center">{$v.brand_web}</td>
+        <td align="center">{$v.brand_content}</td>
+        <td align="center">{$v.brand_order}</td>
+        <td align="center"><a href="{:url('Role/update')}">编辑</a> | <a href="{:url('Role/delete')}">删除</a></td>
+    </tr>
+    {/foreach}
+    </tbody>
  </table>
  </div>
  </div>
@@ -38,5 +47,6 @@
   </ul>
  </div>
 </div><!-- dcFooter 结束 -->
-<div class="clear"></div> </div>
+<div class="clear"></div>
+</div>
 {/block}

@@ -8,20 +8,18 @@ use think\validate\ValidateRule;
 
 class Role extends Common{
     public function index(){
-        $session=Session::get("admin")["admin_name"];
         $data=\app\admin\model\Role::selectRole();
         //var_dump($data);exit;
-        return view("",["admin"=>$session,"data"=>$data]);
+        return view("",["data"=>$data]);
     }
 
     //添加角色
     public function add(){
         if(request()->isGet()){
-            $session=Session::get("admin")["admin_name"];
             //查询权限
             $data=Node::selectNode();
             $data=$this->getNodeOrder($data);
-            return view("",["admin"=>$session,"data"=>$data]);
+            return view("",["data"=>$data]);
         }
         if(request()->isPost()){
             //接值
@@ -59,5 +57,25 @@ class Role extends Common{
             }
         }
         return $nodeOrder;
+    }
+
+    //角色的删除
+    public function delete(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
+        }
+    }
+
+    //角色的修该
+    public function update(){
+        if(request()->isGet()){
+            return view();
+        }
+        if(request()->isPost()){
+
+        }
     }
 }
