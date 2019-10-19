@@ -1,0 +1,388 @@
+{extend name='public:public'}
+{block name='title'}<title>DouPHP 管理中心 - 添加商品 </title>{/block}
+{block name='script'}
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+<script type="text/javascript" src="/admins/js/jquery.autotextarea.js"></script>
+<script src="/timeDate/time.js"></script>
+
+<style type="text/css">
+ .tabbox{margin:10px;}
+ .tabbox ul{list-style:none;display:table;}
+ .tabbox ul li{float:left;width:100px;line-height:30px;padding-left:8px;border:1px solid #aaccff;margin-right:-1px;cursor:pointer;}
+ .tabbox ul li.active{background-color:blue;color:white;font-weight:bold;}
+ .tabbox .content>div{display:none;}
+ .tabbox .content>div.active{display:block;}
+</style>
+<script type="text/javascript">
+ $(function () {
+     $(".tabbox li").click(function (){
+     //获取点击的元素给其添加样式，讲其兄弟元素的样式移除
+     $(this).addClass("active").siblings().removeClass("active");
+     //获取选中元素的下标
+     var index = $(this).index();
+     $(this).parent().siblings().children().eq(index).addClass("active")
+           .siblings().removeClass("active");
+     });
+
+     //点击克隆选择多分类
+     $("a[name=aa]").click(function(){
+         $("td[name=cate]").append("<a href='javascript:void(0)' name='del'>[-]</a>");
+         $(this).next().clone().appendTo("td[name=cate]")
+     });
+     $(document).on("click","a[name=del]",function(){
+         $(this).next().remove();
+         $(this).remove();
+     });
+
+     //点击克隆选择多属性
+     $(document).on("click","a[name=hh]",function(){
+         var clone=$(this).parents("tr").clone();
+         clone.find("a").html("[-]").attr("name","tt");
+         clone.insertAfter($(this).parents("tr"))
+     });
+
+     $(document).on("click","a[name=tt]",function(){
+         $(this).parents("tr").remove();
+     });
+
+     //选择商品类型后，根据所选择类型查询该类型下的属性，展示出来
+     $(document).on("change","select[name=type_id]",function(){
+         $(".b").nextAll().remove();
+         var type = $(this).val();
+         //alert(type);
+         //发送 ajax 查询属性
+         $.ajax({
+             type:"post",
+             url:"{:url('Goods/getAttr')}",
+             data:{
+                 type_id : type
+             },
+             dataType:"json",
+             success:function(data){
+                 var html="";
+                 if(data.status==0){
+                     $.each(data.content,function(key,value){
+                         html+="<tr name=attr>";
+                         html+="<td><a href='javascript:void(0)' name='hh'>[+]</a>"+ value.attr_name+"：</td>";
+                         html+="<td>";
+                         if(value.attr_input_action==0){
+                             html+="<textarea name='attr_value' STYLE='border:2px dotted #6CABE7;'></textarea>";
+                         }else if(value.attr_input_action==1){
+                             var arr=value.attr_value.split('|');
+                             html+="<select name='attr_id'><option value='0'>请选择属性</option>";
+                             $.each(arr,function(k,v){
+                                 html+="<option value="+value.attr_id+">"+v+"</option>";
+                             });
+                             html+="</select>"
+                         }else{
+                             var data=value.attr_value.split('|');
+                             $.each(data,function(k,v){
+                                 html+="<input type='radio' name='attr_name'>"+v+"";
+                             });
+                         }
+                         html+="</td></tr>";
+                     });
+                     $(".a").append(html);
+                 }
+                 if(data.status==1){
+                     alert(对不没有查询到相关信息)
+                 }
+
+             }
+         })
+     })
+
+
+ });
+
+
+
+</script>
+{/block}
+{block name='now'}
+<!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>添加商品</strong> </div><div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+<h3><a href="{:url('Goods/add')}" class="actionBtn">商品列表</a>添加商品</h3>
+<div class="tabbox">
+    <ul width="100%">
+        <li class="active">通用信息</li>
+        <li>详细描述</li>
+        <li>其他信息</li>
+        <li>商品类型</li>
+        <li>商品相册</li>
+    </ul>
+
+    <div class="content">
+    <div class="active">
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+        <tr>
+            <td width="90" align="center">商品名称</td>
+            <td>
+                <input type="text" name="goods_name" class="inpMain" />
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品货号</td>
+            <td>
+                <input type="text" name="goods_item_num" class="inpMain" />
+                <span>（如果不输入，系统会帮您随机生成一个货号）</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品价格</td>
+            <td>
+            <input type="text" name="goods_price" class="inpMain" />
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">市场价格</td>
+            <td>
+                <input type="text" name="goods_market_price"  class="inpMain" />
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">促销日期</td>
+            <td>
+                开始日期：<input name="goods_pro_sdate" type="text"  onClick="new Calendar().show(this)" class="inpMain"/>
+                 —
+                截止日期：<input name="goods_pro_fdate" type="text"  onClick="new Calendar().show(this)" class="inpMain"/>（开始日期时间不得在截止日期时间之后）
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品品牌</td>
+            <td>
+                <select name="brand_id">
+                    <option value="0">请选择商品品牌</option>
+                    {foreach $brand as $k=>$v}
+                    <option value="{$v.brand_id}">{$v['brand_name']}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品分类</td>
+            <td name="cate">
+                <a href="javascript:void(0)" name="aa">[+]</a>
+                <select name="cate_id">
+                    <option value="0">请选择商品分类</option>
+                    {foreach $data as $k=>$v}
+                    <option value="{$v.cate_id}">{:str_repeat("--",$v['level'])}{$v['cate_name']}</option>
+                    {/foreach}
+                </select>
+             </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品原图</td>
+            <td>
+                <input type="file" name="goods_image" class="inpFlie" />
+            <!--<img src="/admins/images/icon_no.png">-->
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品缩略图</td>
+            <td>
+                <input type="file" name="goods_small_image" class="inpFlie" />
+                <!--<img src="/admins/images/icon_no.png">-->
+            </td>
+        </tr>
+
+    </table>
+    </div>
+<form>
+
+</form>
+
+    <div>
+        <table class="tableBasic">
+            <tr >
+                <td align="center" valign="top" class="inpFlie">商品描述:</td>
+                <td>
+                    <!-- KindEditor -->
+                    {load href="/admins/js/kindeditor/themes/default/default.css" /}
+                    {load href="/admina/js/kindeditor/plugins/code/prettify.css" /}
+                    {load href="/admins/js/kindeditor/kindeditor.js" /}
+                    {load href="/admins/js/kindeditor/lang/zh_CN.js" /}
+                    {load href="/admins/js/kindeditor/plugins/code/prettify.js" /}
+                    <script>
+                        KindEditor.ready(function(K) {
+                            var editor1 = K.create('textarea[name="content"]', {
+                                cssPath : '../plugins/code/prettify.css',
+                                uploadJson : '../php/upload_json.php',
+                                fileManagerJson : '../php/file_manager_json.php',
+                                allowFileManager : true,
+                                afterCreate : function() {
+                                    var self = this;
+                                    K.ctrl(document, 13, function() {
+                                        self.sync();
+                                        K('form[name=example]')[0].submit();
+                                    });
+                                    K.ctrl(self.edit.doc, 13, function() {
+                                        self.sync();
+                                        K('form[name=example]')[0].submit();
+                                    });
+                                }
+                            });
+                            prettyPrint();
+                        });
+                    </script>
+                    <!-- /KindEditor -->
+                    <textarea  id="content" name="content" style="width:780px;height:400px;"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div style="margin: 10px">
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+        <tr>
+            <td width="90" align="center">库存数量</td>
+            <td>
+                <input type="text" name="goods_num" value="" class="inpMain" />
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">是否促销</td>
+            <td>
+                <input type="radio" name="goods_ispro" value="0">促销
+                <input type="radio" name="goods_ispro" value="1">不促销
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">是否新品</td>
+            <td>
+                <input type="radio" name="goods_isnew" value="0">新品
+                <input type="radio" name="goods_isnew" value="1">非新品
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">是否热销</td>
+            <td>
+                <input type="radio" name="goods_ishot" value="0">热销
+                <input type="radio" name="goods_ishot" value="1">不热销
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">是否免运费</td>
+            <td>
+                <input type="radio" name="goods_isfreight" value="0">免运费
+                <input type="radio" name="goods_isfreight" value="1">不免运费
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品重量</td>
+            <td>
+                <input type="text" name="goods_weight" class="inpMain">单位：<input type="radio" name="Company" value="0">克 <input type="radio" name="Company" value="1">千克
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">库存警告数量</td>
+            <td>
+                <input type="text"  name="shop_warn_num" class="inpMain">
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商品状态</td>
+            <td>
+                <input type="radio" name="goods_status" value="0" size="80">上架
+                <input type="radio" name="goods_status" value="1" size="80">下架
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">关键字</td>
+            <td>
+                <input type="text" name="goods_keyword" value="" class="inpMain" />
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">简单描述</td>
+            <td>
+                <textarea name="shop_small_content" class="inpMain"></textarea>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">商家备注</td>
+            <td>
+                <textarea name="shop_br" class="inpMain"></textarea>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <div style="margin: 10px">
+    <table class="a">
+        <tr class="b">
+            <td>
+                商品类型：
+            </td>
+            <td>
+                <select name="type_id">
+                    <option value="0">请选择商品类型</option>
+                    {foreach $type as $k=>$v}
+                    <option value="{$v.type_id}">{$v.type_name}</option>
+                    {/foreach}
+                </select>
+                <span>（请选择商品的类型，进而完善商品的属性）</span>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <div style="margin: 10px">
+    <form action="" method="post" enctype="multipart/form-data">
+     <table border="0" >
+            <tr>
+                <td rowspan="2"  style="vertical-align: middle;height: 60px">
+                    上传商品相片
+                </td>
+                <td rowspan="2">
+                    <input type="file" name="album[]" multiple>
+                </td>
+            </tr>
+
+     </table>
+    </form>
+
+    </div>
+
+
+</div>
+ <div style="text-align: center;margin: 10px" >
+  <input name="submit" class="btn" type="submit" value="确认提交"/>
+ </div>
+  </div>
+  </div>
+ </div>
+
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+{/block}
