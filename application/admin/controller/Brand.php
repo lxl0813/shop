@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\service\CateService;
 use think\facade\Session;
 
 
@@ -16,7 +17,9 @@ class Brand extends Common{
     //添加品牌
     public function add(){
         if(request()->isGet()){
-            return view("");
+            $arr=new CateService();
+            $data=$arr->cate();
+            return view("",["data"=>$data]);
         }
         if(request()->isPost()){
             //接值

@@ -12,7 +12,8 @@
             brand_name    :  false,
             brand_web     :  false,
             brand_content :  false,
-            brand_order   :  false
+            brand_order   :  false,
+            cate_id       :  false
         };
         //账号
         $("input[name=brand_name]").blur(function(){
@@ -24,6 +25,7 @@
                 validate.brand_name = true;
             }
         });
+
             //品牌网址
         $("input[name=brand_web]").blur(function(){
             var brand_web = $(this).val().trim();
@@ -91,7 +93,7 @@
                         type:"post",
                         url :"{:url('Brand/add')}",
                         data:{
-                            face           :   this.result,
+                            brand_logo     :   this.result,
                             brand_name     :   brand_name,
                             brand_web      :   brand_web,
                             brand_content  :   brand_content,
@@ -141,6 +143,7 @@
               <input type="radio" name="brand_show" value="1" size="40"  />不显示
           </td>
       </tr>
+
       <tr>
           <td width="80" align="right">品牌网站</td>
           <td>
@@ -159,12 +162,12 @@
               <input type="text" name="brand_order"  size="5" class="inpMain" />
           </td>
       </tr>
-         <tr>
-             <td align="right">品牌logo</td>
-             <td>
-                 <input type="file" name="brand_logo" id="face" >
-             </td>
-         </tr>
+      <tr>
+          <td align="right">品牌logo</td>
+          <td>
+              <input type="file" name="brand_logo" id="face" >
+          </td>
+      </tr>
       <tr>
           <td></td>
           <td>
