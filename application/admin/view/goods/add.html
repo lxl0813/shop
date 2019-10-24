@@ -47,6 +47,17 @@
          $(this).parents("tr").remove();
      });
 
+     //选择促销出现相关信息
+     $("input[name=goods_ispro]").click(function(){
+         if($(this).val()==0){
+             $("tr[name=price]").show();
+             $("tr[name=date]").show();
+         }else{
+             $("tr[name=price]").hide();
+             $("tr[name=date]").hide();
+         }
+     })
+
      //选择商品类型后，根据所选择类型查询该类型下的属性，展示出来
      $(document).on("change","select[name=type_id]",function(){
          $(".b").nextAll().remove();
@@ -65,7 +76,12 @@
                  if(data.status==0){
                      $.each(data.content,function(key,value){
                          html+="<tr name=attr>";
-                         html+="<td><a href='javascript:void(0)' name='hh'>[+]</a>"+ value.attr_name+"：</td>";
+                         html+="<td>";
+                         if(value.attr_type==0){
+                             html+="<a href='javascript:void(0)' name='hh'>[+]</a>";
+                         }
+                         html+=""+ value.attr_name+"";
+                         html+="</td>";
                          html+="<td>";
                          if(value.attr_input_action==0){
 //                             html+="<input hidden name='attr_id[]' value='"+value.attr_id+"'>";
@@ -92,14 +108,9 @@
                  if(data.status==1){
                      alert(对不没有查询到相关信息)
                  }
-
              }
          })
      });
-
-
-
-
 
 
  });
@@ -113,7 +124,7 @@
 <div id="dcMain">
     <div id="urHere">DouPHP 管理中心<b>></b><strong>添加商品</strong></div>
     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="{:url('Goods/add')}" class="actionBtn">商品列表</a>添加商品</h3>
+        <h3><a href="{:url('Goods/index')}" class="actionBtn">商品列表</a>添加商品</h3>
         <form action="{:url('Goods/add')}" name="goods" method="post" enctype="multipart/form-data">
             <div class="tabbox">
                 <ul width="100%">
@@ -164,14 +175,14 @@
                                 </td>
                             </tr>
 
-                            <tr>
+                            <tr hidden name="price">
                                 <td align="center">促销价格</td>
                                 <td>
-                                    <input type="text" name="goods_pro_price" style='border:2px dotted #6CABE7;'>
+                                    <input type="text"  name="goods_pro_price" style='border:2px dotted #6CABE7;'>
                                 </td>
                             </tr>
 
-                            <tr>
+                            <tr hidden name="date">
                                 <td align="center">促销日期</td>
                                 <td>
                                     开始日期：<input name="goods_pro_sdate" type="text"  onClick="new Calendar().show(this)" class="inpMain" style='border:2px dotted #6CABE7;'/>
@@ -210,14 +221,6 @@
                                 <td>
                                     <input type="file" name="goods_image" class="inpFlie" />
                                 <!--<img src="/admins/images/icon_no.png">-->
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td align="center">商品缩略图</td>
-                                <td>
-                                    <input type="file" name="goods_small_image" class="inpFlie" />
-                                    <!--<img src="/admins/images/icon_no.png">-->
                                 </td>
                             </tr>
                         </table>

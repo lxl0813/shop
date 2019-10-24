@@ -1,0 +1,116 @@
+{extend name='public:public'}
+{block name='title'}<title>DouPHP 管理中心 - 货品添加 </title>{/block}
+{block name='script'}
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"-->
+      <!--integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+
+<link href="/admins/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/admins/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admins/js/global.js"></script>
+<script type="text/javascript" src="/admins/js/jquery.autotextarea.js"></script>
+
+<script>
+    $(function(){
+        //克隆
+        $("a[name=aa]").click(function(){
+            var clone = $(this).parents("tr").clone();
+            clone.find("a").html("[-]").attr("name","tt");
+            clone.insertAfter($(this).parents("tr"))
+        })
+        //点击减号删除
+        $(document).on("click","a[name=tt]",function(){
+            $(this).parents("tr").remove();
+        });
+
+        //点击提交
+        $(".btn").click(function(){
+            var arr=[];
+            $("tr[name=p]").each(function(i){
+                var a=$(this).find("input[name=che]").prop("checked");
+                if(a==true){
+                    var goods_id = $("input[name=goods_id]").val();
+                    var products_num = $("input[name=products_num]").val();
+                    var products_price = $("input[name=products_price]").val();
+                    var attr="";
+                    $(this).children("td[name=attr_value]").each(function(){
+                        var c=$(this).attr("attr_id");
+                        attr+="|"+c;
+                    });
+                    var value="";
+                    $(this).children("td[name=attr_value]").each(function(){
+                        var d=$(this).html();
+                        value+="|"+d;
+                    });
+
+                    arr[i]={"goods_id":goods_id,"products_num":products_num,"products_price":products_price,"goods_attrs_id":attr,"goods_attrs_value":value};
+                }
+            });
+            $.ajax({
+                type:"post",
+                url :"{:url('Products/add')}",
+                data:{
+                    arr:arr
+                },
+                dataType:"json",
+                success:function(data){
+                    if(data.status==0){
+                        alert("添加成功");
+                    }
+                    if(data.status==1){
+                        alert("添加失败");
+                    }
+                }
+            })
+        })
+    });
+
+</script>
+
+{/block}
+{block name='now'}
+ <!-- 当前位置 -->
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>货品添加</strong>
+</div><div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('Products/index')}?goods_id={$goods_id}" class="actionBtn add">货品列表</a>添加货品</h3>
+    <div id="list">
+        <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+            <tr>
+                <td align="center">选择</td>
+                {foreach $b as $k=>$v}
+                <td width="100" align="center">{$v.attr_name}</td>
+                {/foreach}
+                <td  align="center">货品数量</td>
+                <td  align="center">货品价格</td>
+            </tr>
+            {foreach $a as $k=>$v}
+            <tr name="p">
+                <td align="center"><input type="checkbox" name="che" checked></td>
+                {foreach $v as $key=>$value}
+                <td align="center" name="attr_value" attr_id="{$value.goods_attr_id}">{$value.attr_value}</td>
+                {/foreach}
+                <td align="center"><input type="text" name="products_num" class="inpMain"></td>
+                <td align="center"><input type="text" name="products_price" class="inpMain"></td>
+            </tr>
+            {/foreach}
+        </table>
+        <input type="text" hidden  value="{$goods_id}" name="goods_id" class="inpMain">
+        <div style="text-align: center;margin: 10px" >
+            <input class="btn" type="submit" value="确认提交"/>
+        </div>
+    </div>
+
+
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+ </div>
+<div class="clear"></div> </div>
+
+{/block}

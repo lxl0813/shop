@@ -15,6 +15,7 @@
     <tr>
         <th align="center">编号</th>
         <th width="120" align="center">品牌名称</th>
+        <th align="center">品牌logo</th>
         <th align="center">是否显示</th>
         <th align="center">品牌网站</th>
         <th align="center">品牌描述</th>
@@ -27,6 +28,7 @@
     <tr>
         <td align="center">{$v.brand_id}</td>
         <td align="center">{$v.brand_name}</td>
+        <td align="center"><img src="{$v.brand_logo}" width="30px"></td>
         <td align="center">{if $v.brand_show==0}显示{else /}不显示{/if}</td>
         <td align="center">{$v.brand_web}</td>
         <td align="center">{$v.brand_content}</td>

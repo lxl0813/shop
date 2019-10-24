@@ -145,29 +145,14 @@
     })
 </script>
 
-
 {/block}
 {block name='now'}
  <!-- 当前位置 -->
  <div id="dcMain">
-<div id="urHere">DouPHP 管理中心<b>></b><strong>商品列表</strong>
+<div id="urHere">DouPHP 管理中心<b>></b><strong>货品列表</strong>
 </div><div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-    <h3><a href="{:url('Goods/add')}" class="actionBtn add">添加商品</a>商品列表</h3>
+    <h3><a href="{:url('Products/add')}?goods_id={$goods_id}" class="actionBtn add">添加货品</a>货品列表</h3>
     <div class="filter">
-        <form action="" method="post">
-            <select name="cat_id">
-                <option value="0">未分类</option>
-                {foreach $cate as $k=>$v}
-                <option value="{$v.cate_id}">{:str_repeat("　",$v['level'])}{$v.cate_name}</option>
-                {/foreach}
-            </select>
-            <input name="keyword" type="text" class="inpMain" value="根据关键字搜索" size="20" />
-            <input name="submit" class="btnGray" type="submit" value="筛选" />
-        </form>
-        <span>
-            <a class="btnGray" href="product.php?rec=re_thumb">更新商品缩略图</a>
-            <a class="btnGray" href="product.php?rec=sort">开始筛选首页商品</a>
-        </span>
     </div>
     <div id="list">
         <form name="action" method="post" action="product.php?rec=action">
@@ -175,52 +160,31 @@
                 <tr>
                     <th width="20" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' value='check'></th>
                     <th width="40" align="center">编号</th>
-                    <th width="80" align="center">商品名称</th>
-                    <th width="80" align="center">货号</th>
-                    <th width="60" align="center">价格</th>
-                    <th width="60" align="center">上架</th>
-                    <th width="60" align="center">热销</th>
-                    <th width="60" align="center">新品</th>
-                    <th width="60" align="center">促销</th>
-                    <th width="60" align="center">库存</th>
+                    <th width="40" align="center">货品属性</th>
+                    <th width="80" align="center">货品价格</th>
+                    <th width="80" align="center">货品数量</th>
                     <th width="150" align="center">操作</th>
                 </tr>
-                {foreach $data as $k=>$v}
-                <tr>
-                    <td align="center"><input type="checkbox" name="checkbox[]" value="15" /></td>
-                    <td align="center" id="id" goods_id="{$v.goods_id}">{$v.goods_id}</td>
-                    <td align="center"><a href="">{$v.goods_name}</a></td>
-                    <td align="center"><a href="product.php?cat_id=3">{$v.goods_item_num}</a></td>
-                    <td align="center">{$v.goods_price}</td>
-                    <td align="center" goods_status="{$v.goods_status}" id="status" status="0">{if $v.goods_status==0}上架{else /}下架{/if}</td>
-                    <td align="center" goods_ishot="{$v.goods_ishot}" id="ishot" status="0">{if $v.goods_ishot==0}热销{else /}非热销{/if}</td>
-                    <td align="center" goods_isnew="{$v.goods_isnew}" id="isnew" status="0">{if $v.goods_isnew==0}新品{else /}非新品{/if}</td>
-                    <td align="center" goods_ispro="{$v.goods_ispro}" id="ispro" status="0">{if $v.goods_ispro==0}非促销{else /}促销{/if}</td>
-                    <td align="center">{$v.goods_num}</td>
-                    <td align="center">
-                        <a href="{:url('Products/index')}?goods_id={$v.goods_id}">货品管理</a> | <a href="{:url('Goods/image',['goods_id'=>{$v.goods_id}])}">添加相片</a> | <a href="product.php?rec=edit&id=15">编辑</a> | <a href="product.php?rec=del&id=15">删除</a>
-                    </td>
-                </tr>
-                {/foreach}
+                {if empty($data)}
+                    <tr>
+                        <td colspan="5" align="center">该商品还没有货品信息</td>
+                    </tr>
+                {else /}
+                    {foreach $data as $k=>$v}
+                    <tr>
+                        <td align="center"><input type="checkbox" name="checkbox[]" value="15" /></td>
+                        <td align="center" id="id" goods_id="{$v.products_id}">{$v.products_id}</td>
+                        <td align="center"><a href="">{:trim($v.goods_attrs_value,"|")}</a></td>
+                        <td align="center"><a href="">{$v.products_price}</a></td>
+                        <td align="center"><a href="product.php?cat_id=3">{$v.products_num}</a></td>
+                        <td align="center">
+                           <a href="product.php?rec=edit&id=15">编辑</a> | <a href="product.php?rec=del&id=15">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                {/if}
             </table>
-            <div class="action">
-                <select name="action" onchange="douAction()">
-                    <option value="0">请选择...</option>
-                    <option value="del_all">删除</option>
-                    <option value="category_move">移动分类至</option>
-                </select>
-                 <select name="new_cat_id" style="display:none">
-                     <option value="0">未分类</option>
-                     <option value="1"> 电子数码</option>
-                     <option value="4">- 智能手机</option>
-                     <option value="5">- 平板电脑</option>
-                     <option value="2"> 家居百货</option>
-                     <option value="3"> 母婴用品</option>
-                 </select>
-                 <input name="submit" class="btn" type="submit" value="执行" />
-            </div>
         </form>
-        <div>{$data|raw}</div>
     </div>
 
 
