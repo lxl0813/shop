@@ -3,11 +3,14 @@ namespace app\admin\controller;
 use app\admin\model\Attr;
 use app\admin\model\Brand;
 use app\admin\model\GoodsAttr;
+
+use app\admin\model\GoodsCates;
 use app\admin\model\Products;
 use app\admin\service\BrandService;
 use app\admin\service\CateService;
 use app\admin\service\ProductsService;
 use app\admin\service\TypeService;
+use think\Model;
 use think\validate\ValidateRule;
 
 class Goods extends Common{
@@ -32,7 +35,7 @@ class Goods extends Common{
         if(request()->isPost()){
             $data=request()->post();
             //dump($data);exit;
-            if($data["cate_id"==0]){
+            if($data["cates_id"==0]){
                 $this->error("请选择分类");
             }
 
@@ -40,8 +43,8 @@ class Goods extends Common{
                 $this->error("请选择品牌");
             }
             //对分类去重
-            $arr=array_unique($data["cate_id"]);
-            $data["cate_id"]=implode("|",$arr);
+            $arr=array_unique($data["cates_id"]);
+            $data["cates_id"]=implode("|",$arr);
 
             //如果没有填写货号，随机生成一个
             if($data["goods_item_num"]==""){
@@ -94,40 +97,50 @@ class Goods extends Common{
                     $d[]=['attr_id'=>$k,"attr_value"=>$value];
                 }
             }
-
-            //入库goods表
+            //var_dump($data);exit;
             //添加商品表
-            $A=new \app\admin\model\Goods();
-            $A->save($data);
-            $goods_id=$A->goods_id;
+            $goods=new \app\admin\model\Goods();
+            $goods->save($data);
+            $goods_id=$goods->goods_id;
+            //打散分类id成为一个数组
+            $data["cates_id"]=explode("|",$data["cates_id"]);
+            $cates_id=[];
+            foreach($data["cates_id"] as $k=>$v){
+                $cates_id[]=["goods_id"=>$goods_id,"cates_id"=>$v];
+            }
+
+            $cate=new GoodsCates();
+            $cate->saveAll($cates_id);
+
+
             //var_dump($goods_id);exit;
             //dump($A);
 
-//            //添加到商品属性表
-//            foreach($d as $k=>$v){
-//                //var_dump($v);exit;
-//                $res=$A->attr()->attach($v["attr_id"],$v);
-//            }
-//            //var_dump($data);exit;
-//
-//            //直接添加货品表
-//            $a=GoodsAttr::where(["goods_id"=>$goods_id,""])->all()->toArray();
-//            //var_dump($a);exit;
-//            $arr=[];
-//            if(isset($a)){
-//                foreach($a as $k=>$v){
-//                    $arr[$v["attr_id"]][]=$v;
-//                }
-//            }
-//            foreach($arr as $key=>$value){
-//                $r[]=$value;
-//            }
-//            //dump($r);exit;
-//            $attr=(new ProductsService())->getArrSet($r);
-//            dump($attr);exit;
-//            foreach($attr as $k=>$v){
-//                $ree=(new Products())->saveAll($v);
-//            }
+            //添加到商品属性表
+            foreach($d as $k=>$v){
+                //var_dump($v);exit;
+                $res=$goods->attr()->attach($v["attr_id"],$v);
+            }
+            //var_dump($data);exit;
+
+            //直接添加货品表
+            $a=GoodsAttr::where(["goods_id"=>$goods_id])->all()->toArray();
+            //var_dump($a);exit;
+            $arr=[];
+            if(isset($a)){
+                foreach($a as $k=>$v){
+                    $arr[$v["attr_id"]][]=$v;
+                }
+            }
+            foreach($arr as $key=>$value){
+                $r[]=$value;
+            }
+            //dump($r);exit;
+            $attr=(new ProductsService())->getArrSet($r);
+            //dump($attr);exit;
+            foreach($attr as $k=>$v){
+                $ree=(new Products())->saveAll($v);
+            }
 
             if($res){
                 $this->success("商品添加成功","Goods/index");

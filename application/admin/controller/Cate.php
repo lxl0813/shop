@@ -52,7 +52,7 @@ class Cate extends Common{
             $data=["cate_name"=>$cate_name,"cate_show"=>$cate_show,"cate_navigation"=>$cate_navigation,"cate_pid"=>$cate_pid
                    ,"cate_keyword"=>$cate_keyword,"cate_content"=>$cate_content,"cate_order"=>$cate_order
             ];
-            $arr=\app\admin\model\Cate::addcate($data);
+            $arr=\app\admin\model\Cates::addcate($data);
             if($arr){
                 $this->error("添加分类成功");
             }

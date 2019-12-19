@@ -119,13 +119,12 @@ $(document).ready(function() {
  </dd>
  <dd class="pwd_icon">
   <input type="password" placeholder="密码" name="admin_pwd" class="login_txtbx"/>
-
  </dd>
-    <dd class="val_icon">
-            <input type="text" id="J_codetext" placeholder="验证码" name="admin_code" class="login_txtbx">
-    </dd>
+ <dd class="val_icon">
+   <input type="text" id="J_codetext" placeholder="验证码" name="admin_code" class="login_txtbx">
+ </dd>
     <img src="{:captcha_src()}" alt="captche" onclick="this.src='{:captcha_src()}?'+Math.random()" width="100px" height="40px">
-    <dd>
+  <dd>
  <div>
   <input type="checkbox" value="1" name="save" />七天免登陆
  </div>

@@ -207,10 +207,10 @@
                                 <td align="center">商品分类</td>
                                 <td name="cate">
                                     <a href="javascript:void(0)" name="aa">[+]</a>
-                                    <select name="cate_id[]">
+                                    <select name="cates_id[]">
                                         <option value="0">不可选择相同的分类</option>
                                         {foreach $data as $k=>$v}
-                                        <option value="{$v.cate_id}">{:str_repeat("--",$v['level'])}{$v['cate_name']}</option>
+                                        <option value="{$v.cates_id}">{:str_repeat("--",$v['level'])}{$v['cates_name']}</option>
                                         {/foreach}
                                     </select>
                                  </td>

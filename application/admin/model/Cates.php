@@ -3,7 +3,8 @@ namespace app\admin\model;
 use think\Db;
 use think\Model;
 
-class Cate extends Model{
+class Cates extends Model{
+    protected $pk = "cates_id";
     public static function selectCate(){
         return self::select();
     }
